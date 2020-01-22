@@ -17,6 +17,10 @@ jobs:
           command: date
 
       - run:
+          name: "Sleep"
+          command: "sleep 30"
+
+      - run:
           name: mkdir
           command: mkdir /code/
 
