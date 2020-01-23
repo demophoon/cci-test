@@ -1,6 +1,20 @@
 ---
 version: 2
 jobs:
+  deploy_only:
+    docker:
+      - image: debian:stretch
+
+      steps:
+        - run:
+            name: echo Deploying only.
+  say_hi:
+    docker:
+      - image: debian:stretch
+
+      steps:
+        - run:
+            name: echo HI
   build:
     docker:
       - image: debian:stretch
@@ -35,5 +49,5 @@ workflows:
   version: 2
   no_artifacts:
     jobs:
-      checkout
-      Greeting
+      - build
+      - say_hi
