@@ -10,11 +10,11 @@ jobs:
 
       - run:
           name: Greeting
-          command: echo Hello, world.
+          command: "echo Hello, ${location:-World}."
 
       - run:
           name: Print the Current Time
-          command: date
+          command: "date"
 
       - run:
           name: "Sleep"
@@ -22,11 +22,11 @@ jobs:
 
       - run:
           name: mkdir
-          command: mkdir /code/
+          command: "mkdir /code/"
 
       - run:
           name: cp artifact
-          command: cp artifact /code/artifact
+          command: "cp artifact /code/artifact"
 
       - store_artifacts:
           path: /code/artifact
