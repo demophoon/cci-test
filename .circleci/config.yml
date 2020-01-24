@@ -4,6 +4,10 @@ jobs:
   build:
     docker:
       - image: debian:stretch
+    filters:
+      branches:
+        only:
+          - test
     steps:
       - checkout
       - run: echo Hello, world.
