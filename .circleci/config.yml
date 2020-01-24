@@ -18,8 +18,7 @@ jobs:
     docker:
       - image: debian:stretch
     steps:
-      - run:
-          name: echo Deploying only.
+      - run: echo Deploying only.
   say_hi:
     docker:
       - image: debian:stretch
