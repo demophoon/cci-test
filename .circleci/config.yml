@@ -4,10 +4,6 @@ jobs:
   build:
     docker:
       - image: debian:stretch
-    filters:
-      branches:
-        only:
-          - test
     steps:
       - checkout
       - run: echo Hello, world.
@@ -34,5 +30,15 @@ workflows:
   version: 2
   no_artifacts:
     jobs:
-      - build
-      - say_hi
+      - build:
+          filters:
+            branches:
+              only: test
+      - say_hi:
+          filters:
+            tags:
+              only: /^v.*/
+      - deploy_only:
+          filters:
+            branches:
+              only: master
