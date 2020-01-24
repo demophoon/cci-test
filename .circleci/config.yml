@@ -1,49 +1,30 @@
 ---
 version: 2
 jobs:
-  deploy_only:
-    docker:
-      - image: debian:stretch
-
-      steps:
-        - run:
-            name: echo Deploying only.
-  say_hi:
-    docker:
-      - image: debian:stretch
-
-      steps:
-        - run:
-            name: echo HI
   build:
     docker:
       - image: debian:stretch
-
     steps:
       - checkout
-
-      - run:
-          name: Greeting
-          command: echo Hello, world.
-
-      - run:
-          name: Print the Current Time
-          command: date
-
-      - run:
-          name: "Sleep"
-          command: "sleep 30"
-
-      - run:
-          name: mkdir
-          command: mkdir /code/
-
-      - run:
-          name: cp artifact
-          command: cp artifact /code/artifact
-
+      - run: echo Hello, world.
+      - run: date
+      - run: "sleep 30"
+      - run: mkdir /code/
+      - run: cp artifact /code/artifact
       - store_artifacts:
           path: /code/artifact
+
+  deploy_only:
+    docker:
+      - image: debian:stretch
+    steps:
+      - run:
+          name: echo Deploying only.
+  say_hi:
+    docker:
+      - image: debian:stretch
+    steps:
+      - run: echo HI
 
 workflows:
   version: 2
