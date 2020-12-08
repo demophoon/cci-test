@@ -49,8 +49,12 @@ workflows:
   primary_cache_test:
     jobs:
       - primary_cache
-      - read_from_cache
+      - read_from_cache:
+          requires:
+            - primary_cache
   secondary_cache_test:
     jobs:
       - secondary_cache
-      - read_from_cache
+      - read_from_cache:
+          requires:
+            - secondary_cache
