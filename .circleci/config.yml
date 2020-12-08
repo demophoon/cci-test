@@ -8,7 +8,7 @@ jobs:
       - restore_cache:
           key: shared-cache
       - run:
-          command: 'mkdir /code/'
+          command: 'mkdir -p /code/'
       - run:
           command: "echo 'cache 1' > /code/cache"
       - save_cache:
@@ -25,7 +25,7 @@ jobs:
       - run:
           command: 'sleep 15'
       - run:
-          command: 'mkdir /code/'
+          command: 'mkdir -p /code/'
       - run:
           command: "echo 'cache 2' > /code/cache"
       - save_cache:
