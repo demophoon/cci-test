@@ -1,53 +1,56 @@
 ---
 version: 2
 jobs:
-  build:
+  primary_cache:
     docker:
       - image: debian:stretch
     steps:
-      - checkout
-      - run: echo Hello, world.
-      - run: date
-      - run: "sleep 30"
-      - run: mkdir /code/
-      - run: cp artifact /code/artifact
-      - store_artifacts:
-          path: /code/artifact
+      - restore_cache:
+          key: shared-cache
+      - run:
+          command: 'mkdir /code/'
+      - run:
+          command: "echo 'cache 1' > /code/cache"
+      - save_cache:
+          key: shared-cache
+          paths:
+            - '/code/'
 
-  deploy_only:
+  secondary_cache:
     docker:
       - image: debian:stretch
     steps:
-      - run: echo Deploying only.
-  say_hi:
+      - restore_cache:
+          key: shared-cache
+      - run:
+          command: 'sleep 15'
+      - run:
+          command: 'mkdir /code/'
+      - run:
+          command: "echo 'cache 2' > /code/cache"
+      - save_cache:
+          key: shared-cache
+          paths:
+            - '/code/'
+
+  read_from_cache:
     docker:
       - image: debian:stretch
     steps:
-      - run: echo HI
+      - run:
+          command: 'sleep 30'
+      - restore_cache:
+          key: shared-cache
+      - run:
+          command: 'cat /code/cache'
 
 workflows:
   version: 2
-  nightly:
+  primary_cache_test:
     jobs:
-      - build
-    triggers:
-      - schedule:
-          cron: "0 0 * * *"
-          filters:
-            branches:
-              only:
-                - master
-  no_artifacts:
+      - primary_cache
+      - read_from_cache
+  secondary_cache_test:
     jobs:
-      - build:
-          filters:
-            branches:
-              only: test
-      - say_hi:
-          filters:
-            tags:
-              only: /^v.*/
-      - deploy_only:
-          filters:
-            branches:
-              only: master
+      - secondary_cache
+      - read_from_cache
